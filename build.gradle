@@ -1,0 +1,54 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'org.wisepersist:gwt-gradle-plugin:1.0.3'
+    }
+}
+
+apply plugin: 'gwt-compiler'
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+gwt {
+    gwtVersion='2.8.1'
+
+    modules 'com.shc.JavaUWP'
+    devModules 'com.shc.JavaUWP'
+
+    minHeapSize = "512M"
+    maxHeapSize = "1024M"
+
+    compiler.style = "PRETTY"
+}
+
+afterEvaluate {
+    build.dependsOn compileGwt
+}
+
+build.doLast {
+    fileTree("JavaUWPExperiment/JavaUWPExperiment/src/").each {
+        delete it
+    }
+
+    copy {
+        from "build/gwt/out"
+        from "src/main/webapp"
+        exclude "javauwp/javauwp.nocache.js"
+        into "JavaUWPExperiment/JavaUWPExperiment/src/"
+    }
+
+    copy {
+        from "build/gwt/out/javauwp/javauwp.nocache.js"
+        into "JavaUWPExperiment/JavaUWPExperiment/src/javauwp/"
+        filter {
+            String line -> line.replaceAll("javascript:\\\"\\\"", "javascript: function() { return \"\"; }")
+        }
+    }
+}

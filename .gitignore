@@ -1,0 +1,7 @@
+build/
+.gradle/
+.vs/
+bin/
+bld/
+JavaUWPExperiment/JavaUWPExperiment/src/
+JavaUWPExperiment/JavaUWPExperiment/WEB-INF/
