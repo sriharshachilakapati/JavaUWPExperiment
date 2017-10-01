@@ -10,6 +10,10 @@ public class Main implements EntryPoint
     {
         Document.get()
                 .getElementById("hello")
-                .setInnerHTML("Howdy!!!");
+                .setInnerHTML("Howdy!!!<br>" + getDate());
     }
+
+    private static native String getDate() /*-{
+        return new Date().toString();
+    }-*/;
 }
